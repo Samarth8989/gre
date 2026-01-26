@@ -73,7 +73,6 @@
 
         .dots::after {
             content: '';
-            animation: dots 1.5s steps(4, end) infinite;
         }
 
         @keyframes dots {
@@ -875,9 +874,18 @@
 
         // Fade out loading screen
         window.addEventListener('load', () => {
+            // Animate dots
+            const dotsEl = document.querySelector('.dots');
+            let dotCount = 0;
+            const dotsInterval = setInterval(() => {
+                dotCount = (dotCount + 1) % 4;
+                dotsEl.textContent = '.'.repeat(dotCount);
+            }, 400);
+            
             setTimeout(() => {
+                clearInterval(dotsInterval);
                 document.getElementById('loading-screen').classList.add('fade-out');
-            }, 800);
+            }, 1200);
         });
     </script>
 </body>

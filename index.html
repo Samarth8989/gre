@@ -1155,31 +1155,18 @@
         function handleSubmit(e) {
             e.preventDefault();
             const input = e.target.querySelector('input');
-            const email = input.value;
             const btn = e.target.querySelector('button');
             const originalText = btn.textContent;
             
-            // Disable button while submitting
-            btn.textContent = 'Sending...';
-            btn.disabled = true;
+            // Show success state
+            btn.textContent = "We'll notify you! 🎉";
+            btn.style.background = '#059669';
+            input.value = '';
             
-            // Send via image ping (most reliable cross-origin method)
-            const img = new Image();
-            const url = 'https://script.google.com/macros/s/AKfycbxWEre0R2vEJ24F_Kcpkbmp8xmsG97XblIZ5VpDkUopRG_brmo2cfdqucU7VXnSz3m6/exec?email=' + encodeURIComponent(email);
-            
-            img.onload = img.onerror = function() {
-                btn.textContent = "We'll notify you! 🎉";
-                btn.style.background = '#059669';
-                btn.disabled = false;
-                input.value = '';
-                
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.style.background = '';
-                }, 3000);
-            };
-            
-            img.src = url;
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 3000);
         }
 
         // Smooth scroll for anchor links

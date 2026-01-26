@@ -549,6 +549,16 @@
             line-height: 1.6;
         }
 
+        .memorize-hint {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: #FEF3C7;
+            border-radius: 12px;
+            color: #92400E;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
         /* Word Navigation */
         .word-nav {
             display: flex;
@@ -953,9 +963,11 @@
                 <!-- Toggle Switch -->
                 <div class="mode-toggle">
                     <button class="mode-btn active" data-mode="memorize">
+                        <span class="mode-emoji">😵‍💫</span>
                         <span class="mode-text">Memorize Mode</span>
                     </button>
                     <button class="mode-btn" data-mode="bridge">
+                        <span class="mode-emoji">⚡</span>
                         <span class="mode-text">Bridge Mode</span>
                     </button>
                 </div>
@@ -975,8 +987,11 @@
                         <div class="meaning-text">A person who acts obsequiously towards someone important to gain advantage; a flatterer.</div>
                     </div>
 
-                    <!-- Memorize Mode Content -->
+                    <!-- Memorize Mode Content (empty - just word and meaning) -->
                     <div class="mode-content memorize-content active">
+                        <div class="memorize-hint">
+                            <p>That's it. Just read and repeat until it sticks... hopefully 😅</p>
+                        </div>
                     </div>
 
                     <!-- Bridge Mode Content -->

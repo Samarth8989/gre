@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BridgeWords — Remember Every GRE Word</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Satoshi:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FAFAF9;
+            --bg-subtle: #F5F5F4;
+            --text-primary: #1C1917;
+            --text-secondary: #57534E;
+            --text-tertiary: #A8A29E;
+            --accent: #2563EB;
+            --accent-soft: #DBEAFE;
+            --border: #E7E5E4;
+            --serif: 'Instrument Serif', Georgia, serif;
+            --sans: 'Satoshi', -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Subtle grain texture */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.3;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            z-index: 1000;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.25rem 2rem;
+            background: rgba(250, 250, 249, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        nav.scrolled {
+            border-bottom-color: var(--border);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--serif);
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a.btn-primary {
+            color: white;
+        }
+
+        .nav-links a.btn-primary:hover {
+            color: white;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            font-family: var(--sans);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg);
+        }
+
+        .btn-primary:hover {
+            background: #292524;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-subtle);
+            border-color: var(--text-tertiary);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 2rem 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 100px;
+            width: fit-content;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.1s;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            max-width: 900px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.2s;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 540px;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.35s;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        .hero-note {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.65s;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Demo Section */
+        .demo {
+            padding: 6rem 2rem;
+            background: var(--bg-subtle);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .demo-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-tertiary);
+            margin-bottom: 1rem;
+        }
+
+        .demo h2 {
+            font-family: var(--serif);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .demo-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+        }
+
+        /* Word Card */
+        .word-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 
+                0 1px 2px rgba(0,0,0,0.04),
+                0 4px 16px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+        }
+
+        .word-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .gre-word {
+            font-family: var(--serif);
+            font-size: 2.5rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        .pronunciation {
+            font-size: 0.95rem;
+            color: var(--text-tertiary);
+            margin-top: 0.25rem;
+        }
+
+        .word-type {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            padding: 0.4rem 0.8rem;
+            background: var(--bg-subtle);
+            border-radius: 6px;
+        }
+
+        .meaning-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .meaning-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-tertiary);
+            margin-bottom: 0.5rem;
+        }
+
+        .meaning-text {
+            font-size: 1.15rem;
+            color: var(--text-primary);
+        }
+
+        /* Bridge Section - The Star */
+        .bridge-section {
+            background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+            border-radius: 12px;
+            padding: 1.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bridge-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), #60A5FA);
+        }
+
+        .bridge-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .bridge-label svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .bridge-word {
+            font-family: var(--serif);
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .bridge-explanation {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .bridge-flow {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 1px dashed rgba(37, 99, 235, 0.2);
+        }
+
+        .flow-item {
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.4rem 0.8rem;
+            background: white;
+            border-radius: 6px;
+            color: var(--text-primary);
+        }
+
+        .flow-arrow {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        /* Examples Carousel */
+        .examples-carousel {
+            margin-top: 3rem;
+            position: relative;
+        }
+
+        .carousel-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .carousel-arrow {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            position: relative;
+            z-index: 10;
+        }
+
+        .carousel-arrow:hover {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .carousel-arrow:hover svg {
+            color: var(--accent);
+        }
+
+        .carousel-arrow svg {
+            width: 24px;
+            height: 24px;
+            color: var(--text-secondary);
+        }
+
+        .carousel-track {
+            position: relative;
+            flex: 1;
+            min-height: 500px;
+            overflow: hidden;
+        }
+
+        .word-card.carousel-card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .word-card.carousel-card.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+            position: relative;
+            visibility: visible;
+        }
+
+        .word-card.carousel-card.exit-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            visibility: visible;
+        }
+
+        .word-card.carousel-card.exit-right {
+            opacity: 0;
+            transform: translateX(60px);
+            visibility: visible;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .carousel-cta {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.05rem;
+            background: var(--text-primary);
+            color: white;
+        }
+
+        .btn-large:hover {
+            background: #292524;
+            transform: translateY(-1px);
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: none;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .carousel-dot:hover {
+            background: var(--text-tertiary);
+        }
+
+        .carousel-dot.active {
+            background: var(--accent);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 8rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .how-it-works h2 {
+            font-family: var(--serif);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .how-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--serif);
+            font-size: 1.25rem;
+            background: var(--text-primary);
+            color: var(--bg);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .step p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Stats */
+        .stats {
+            padding: 5rem 2rem;
+            background: var(--text-primary);
+            color: var(--bg);
+        }
+
+        .stats-inner {
+            max-width: 700px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: var(--serif);
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 8rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonials h2 {
+            font-family: var(--serif);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .testimonial {
+            background: var(--bg-subtle);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .testimonial-text {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-soft), #C7D2FE);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        .author-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .author-info p {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+        }
+
+        /* CTA */
+        .cta {
+            padding: 8rem 2rem;
+            text-align: center;
+            background: var(--bg-subtle);
+            border-top: 1px solid var(--border);
+        }
+
+        .cta-inner {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta h2 {
+            font-family: var(--serif);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-form {
+            display: flex;
+            gap: 0.75rem;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        .cta-input {
+            flex: 1;
+            padding: 0.9rem 1.25rem;
+            font-family: var(--sans);
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        .cta-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .cta-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: var(--serif);
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-copy {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 7rem 1.5rem 4rem;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .stats-inner {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .cta-form {
+                flex-direction: column;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* Scroll animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <nav id="nav">
+        <div class="nav-inner">
+            <a href="#" class="logo">BridgeWords</a>
+            <div class="nav-links">
+                <a href="#how">How It Works</a>
+                <a href="words.html" class="btn btn-primary">Start Learning</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Stop forgetting GRE words. <em>Start recalling them instantly.</em></h1>
+        <p class="hero-subtitle">Learn with small memory hooks that make meanings stick in less time.</p>
+        <div class="hero-cta">
+            <a href="#demo" class="btn btn-primary">See How It Works</a>
+        </div>
+    </section>
+
+    <section class="demo" id="demo">
+        <div class="demo-inner">
+            <p class="section-label reveal">The Bridge Method</p>
+            <h2 class="reveal">One word that unlocks meaning</h2>
+            <p class="demo-subtitle reveal">A Bridge Word is a familiar word or phrase that sounds like the GRE word and connects to its meaning—creating an instant, unforgettable link.</p>
+
+            <div class="examples-carousel reveal">
+                <div class="carousel-container">
+                    <button class="carousel-arrow carousel-prev" aria-label="Previous">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+
+                    <div class="carousel-track">
+                    <!-- Card 1: Sycophant -->
+                    <div class="word-card carousel-card active">
+                        <div class="word-card-header">
+                            <div>
+                                <div class="gre-word">Sycophant</div>
+                                <div class="pronunciation">/ˈsɪkəfænt/</div>
+                            </div>
+                            <span class="word-type">Noun</span>
+                        </div>
+                        <div class="bridge-section">
+                            <div class="bridge-label">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                Bridge Word
+                            </div>
+                            <div class="bridge-word">"Sick of Ants"</div>
+                            <div class="bridge-explanation">Imagine a powerful person surrounded by annoying ants (flatterers) crawling all over them. They're "sick of ants" — sick of sycophants!</div>
+                        </div>
+                        <div class="meaning-section">
+                            <div class="meaning-label">Meaning</div>
+                            <div class="meaning-text">A person who acts obsequiously towards someone important to gain advantage; a flatterer.</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Abate -->
+                    <div class="word-card carousel-card">
+                        <div class="word-card-header">
+                            <div>
+                                <div class="gre-word">Abate</div>
+                                <div class="pronunciation">/əˈbeɪt/</div>
+                            </div>
+                            <span class="word-type">Verb</span>
+                        </div>
+                        <div class="bridge-section">
+                            <div class="bridge-label">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                Bridge Word
+                            </div>
+                            <div class="bridge-word">"A Bit"</div>
+                            <div class="bridge-explanation">When something abates, it becomes just "a bit" — it reduces down to a smaller amount.</div>
+                        </div>
+                        <div class="meaning-section">
+                            <div class="meaning-label">Meaning</div>
+                            <div class="meaning-text">To reduce in intensity or amount; become less.</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Candid -->
+                    <div class="word-card carousel-card">
+                        <div class="word-card-header">
+                            <div>
+                                <div class="gre-word">Candid</div>
+                                <div class="pronunciation">/ˈkændɪd/</div>
+                            </div>
+                            <span class="word-type">Adjective</span>
+                        </div>
+                        <div class="bridge-section">
+                            <div class="bridge-label">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                Bridge Word
+                            </div>
+                            <div class="bridge-word">"Can't Hide"</div>
+                            <div class="bridge-explanation">A candid person can't hide the truth — they're openly and straightforwardly honest.</div>
+                        </div>
+                        <div class="meaning-section">
+                            <div class="meaning-label">Meaning</div>
+                            <div class="meaning-text">Honest and straightforward; frank.</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Obfuscate -->
+                    <div class="word-card carousel-card">
+                        <div class="word-card-header">
+                            <div>
+                                <div class="gre-word">Obfuscate</div>
+                                <div class="pronunciation">/ˈɒbfʌskeɪt/</div>
+                            </div>
+                            <span class="word-type">Verb</span>
+                        </div>
+                        <div class="bridge-section">
+                            <div class="bridge-label">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                Bridge Word
+                            </div>
+                            <div class="bridge-word">"Fog"</div>
+                            <div class="bridge-explanation">To obfuscate is to create fog around something — making it unclear and hard to see through.</div>
+                        </div>
+                        <div class="meaning-section">
+                            <div class="meaning-label">Meaning</div>
+                            <div class="meaning-text">To make unclear or confusing; obscure.</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Intrepid -->
+                    <div class="word-card carousel-card">
+                        <div class="word-card-header">
+                            <div>
+                                <div class="gre-word">Intrepid</div>
+                                <div class="pronunciation">/ɪnˈtrepɪd/</div>
+                            </div>
+                            <span class="word-type">Adjective</span>
+                        </div>
+                        <div class="bridge-section">
+                            <div class="bridge-label">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                Bridge Word
+                            </div>
+                            <div class="bridge-word">"No Trepidation"</div>
+                            <div class="bridge-explanation">An intrepid person has no trepidation (fear) — they're completely fearless and brave.</div>
+                        </div>
+                        <div class="meaning-section">
+                            <div class="meaning-label">Meaning</div>
+                            <div class="meaning-text">Fearless and adventurous; brave.</div>
+                        </div>
+                    </div>
+                </div>
+
+                    <button class="carousel-arrow carousel-next" aria-label="Next">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="carousel-dots">
+                    <button class="carousel-dot active" data-index="0"></button>
+                    <button class="carousel-dot" data-index="1"></button>
+                    <button class="carousel-dot" data-index="2"></button>
+                    <button class="carousel-dot" data-index="3"></button>
+                    <button class="carousel-dot" data-index="4"></button>
+                </div>
+
+                <div class="carousel-cta">
+                    <a href="words.html" class="btn btn-primary btn-large">Start Learning</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works" id="how">
+        <p class="section-label reveal" style="text-align: center;">How It Works</p>
+        <h2 class="reveal">Learn in three steps</h2>
+        <p class="how-subtitle reveal">Our method is based on memory research. Connections beat repetition.</p>
+
+        <div class="steps">
+            <div class="step reveal">
+                <div class="step-number">1</div>
+                <h3>See the Word</h3>
+                <p>Each GRE word comes with its pronunciation, meaning, and usage in context.</p>
+            </div>
+            <div class="step reveal">
+                <div class="step-number">2</div>
+                <h3>Find the Bridge</h3>
+                <p>We reveal the Bridge Word — a phonetic or conceptual link that makes the meaning stick.</p>
+            </div>
+            <div class="step reveal">
+                <div class="step-number">3</div>
+                <h3>Lock It In</h3>
+                <p>Quick recall exercises reinforce the connection. One session, permanent memory.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stats-inner">
+            <div class="reveal">
+                <div class="stat-number">3x</div>
+                <div class="stat-label">Faster recall through association</div>
+            </div>
+            <div class="reveal">
+                <div class="stat-number">½</div>
+                <div class="stat-label">The study time, double the retention</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials" id="testimonials">
+        <p class="section-label reveal" style="text-align: center;">What People Are Saying</p>
+        <h2 class="reveal">Words they'll never forget</h2>
+
+        <div class="testimonial-grid">
+            <div class="testimonial reveal">
+                <p class="testimonial-text">"I've tried Magoosh, Quizlet, everything. This is the first time words actually stick. The bridge for 'obsequious' alone was worth signing up."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">SK</div>
+                    <div class="author-info">
+                        <h4>Samarth K.</h4>
+                        <p>Scored 160V on GRE</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial reveal">
+                <p class="testimonial-text">"As a non-native speaker, vocabulary was my biggest fear. BridgeWords made it my strength. I remember 50+ words from a single session."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">RV</div>
+                    <div class="author-info">
+                        <h4>Riya V.</h4>
+                        <p>MS CS Applicant</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial reveal">
+                <p class="testimonial-text">"The Hindi bridges are genius. Finally, a vocab tool that works with how my brain actually thinks. My verbal score jumped 8 points."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">AS</div>
+                    <div class="author-info">
+                        <h4>Arjun S.</h4>
+                        <p>MBA Applicant, IIM-A</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta" id="cta">
+        <div class="cta-inner">
+            <h2 class="reveal">Found this helpful?</h2>
+            <p class="reveal">We're launching the full version with 1,000+ words soon. Drop your email to get notified.</p>
+            <form class="cta-form reveal" onsubmit="handleSubmit(event)">
+                <input type="email" class="cta-input" placeholder="Enter your email" required>
+                <button type="submit" class="btn btn-primary">Notify Me</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-inner">
+            <a href="#" class="footer-logo">BridgeWords</a>
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Blog</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+            <p class="footer-copy">© 2025 BridgeWords</p>
+        </div>
+    </footer>
+
+    <script>
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        reveals.forEach(el => revealObserver.observe(el));
+
+        // Form submission
+        function handleSubmit(e) {
+            e.preventDefault();
+            const input = e.target.querySelector('input');
+            const email = input.value;
+            const btn = e.target.querySelector('button');
+            const originalText = btn.textContent;
+            
+            // Disable button while submitting
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+            
+            // Send via image ping (most reliable cross-origin method)
+            const img = new Image();
+            const url = 'https://script.google.com/macros/s/AKfycbxWEre0R2vEJ24F_Kcpkbmp8xmsG97XblIZ5VpDkUopRG_brmo2cfdqucU7VXnSz3m6/exec?email=' + encodeURIComponent(email);
+            
+            img.onload = img.onerror = function() {
+                btn.textContent = "We'll notify you! 🎉";
+                btn.style.background = '#059669';
+                btn.disabled = false;
+                input.value = '';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 3000);
+            };
+            
+            img.src = url;
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Examples Carousel
+        const carouselCards = document.querySelectorAll('.word-card.carousel-card');
+        const carouselDots = document.querySelectorAll('.carousel-dot');
+        let currentIndex = 0;
+        let carouselInterval;
+
+        function showCard(index, direction = 'next') {
+            const currentCard = carouselCards[currentIndex];
+            const nextCard = carouselCards[index];
+            
+            // Remove all transition classes
+            carouselCards.forEach(card => {
+                card.classList.remove('active', 'exit-left', 'exit-right');
+            });
+            
+            // Add exit animation to current card
+            if (direction === 'next') {
+                currentCard.classList.add('exit-left');
+            } else {
+                currentCard.classList.add('exit-right');
+            }
+            
+            // Update dots
+            carouselDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+
+            // Add active class to new card after brief delay
+            setTimeout(() => {
+                currentCard.classList.remove('exit-left', 'exit-right');
+                nextCard.classList.add('active');
+                currentIndex = index;
+            }, 50);
+        }
+
+        function nextCard() {
+            const next = (currentIndex + 1) % carouselCards.length;
+            showCard(next, 'next');
+        }
+
+        function prevCard() {
+            const prev = (currentIndex - 1 + carouselCards.length) % carouselCards.length;
+            showCard(prev, 'prev');
+        }
+
+        function startCarousel() {
+            carouselInterval = setInterval(nextCard, 12000);
+        }
+
+        function resetCarousel() {
+            clearInterval(carouselInterval);
+            startCarousel();
+        }
+
+        // Click on dots
+        carouselDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                const direction = index > currentIndex ? 'next' : 'prev';
+                showCard(index, direction);
+                resetCarousel();
+            });
+        });
+
+        // Click on arrows
+        document.querySelector('.carousel-prev').addEventListener('click', () => {
+            prevCard();
+            resetCarousel();
+        });
+
+        document.querySelector('.carousel-next').addEventListener('click', () => {
+            nextCard();
+            resetCarousel();
+        });
+
+        // Start auto-rotation
+        startCarousel();
+    </script>
+</body>
+</html>

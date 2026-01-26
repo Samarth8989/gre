@@ -457,6 +457,7 @@
 
         .mode-btn:hover {
             color: var(--text-primary);
+            background: rgba(0,0,0,0.05);
         }
 
         .mode-btn.active {
@@ -465,21 +466,23 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .mode-btn.active[data-mode="bridge"] {
-            background: var(--accent);
-            color: white;
-        }
-
-        /* Subtle glow pulse for Bridge Mode button when not active */
+        /* Subtle attention animation for Bridge Mode when not active */
         .mode-btn[data-mode="bridge"]:not(.active) {
-            background: var(--accent);
-            color: white;
-            animation: subtlePulse 2s ease-in-out infinite;
+            animation: gentleNudge 1.5s ease-in-out infinite;
         }
 
-        @keyframes subtlePulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
-            50% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+        .mode-btn[data-mode="bridge"]:not(.active) .mode-emoji {
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes gentleNudge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
         .mode-emoji {
@@ -601,11 +604,13 @@
         .start-learning-btn {
             position: relative;
             transition: all 0.3s ease;
+            overflow: visible;
         }
 
         .start-learning-btn.loading {
             pointer-events: none;
             color: transparent !important;
+            background: var(--text-primary) !important;
         }
 
         .start-learning-btn.loading::after {
@@ -617,7 +622,7 @@
             left: 50%;
             margin-left: -10px;
             margin-top: -10px;
-            border: 2px solid transparent;
+            border: 3px solid rgba(255,255,255,0.3);
             border-top-color: white;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;

@@ -420,97 +420,166 @@
             font-size: 1.2rem;
         }
 
-        /* Examples Carousel */
-        .examples-carousel {
+        /* Interactive Demo */
+        .interactive-demo {
             margin-top: 3rem;
-            position: relative;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .carousel-container {
+        .mode-toggle {
             display: flex;
-            align-items: center;
-            gap: 1rem;
+            background: var(--bg-subtle);
+            border-radius: 12px;
+            padding: 6px;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
         }
 
-        .carousel-arrow {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: white;
-            cursor: pointer;
+        .mode-btn {
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            position: relative;
-            z-index: 10;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: var(--sans);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
         }
 
-        .carousel-arrow:hover {
+        .mode-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .mode-btn.active {
+            background: white;
+            color: var(--text-primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .mode-btn.active[data-mode="bridge"] {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Subtle glow pulse for Bridge Mode button when not active */
+        .mode-btn[data-mode="bridge"]:not(.active) {
+            background: var(--accent);
+            color: white;
+            animation: subtlePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+        }
+
+        .mode-emoji {
+            font-size: 1.25rem;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 
+                0 1px 2px rgba(0,0,0,0.04),
+                0 8px 32px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+            transition: border-color 0.3s ease;
+        }
+
+        .demo-card.bridge-active {
             border-color: var(--accent);
-            background: var(--accent-soft);
         }
 
-        .carousel-arrow:hover svg {
+        .mode-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .mode-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Memorize Mode Styles */
+        .memorize-section {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .memorize-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #92400E;
+            margin-bottom: 1rem;
+        }
+
+        .memorize-label svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .memorize-hint {
+            color: #78350F;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Word Navigation */
+        .word-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .word-nav-btn {
+            padding: 0.5rem 1rem;
+            font-family: var(--sans);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .word-nav-btn:hover {
+            border-color: var(--accent);
             color: var(--accent);
         }
 
-        .carousel-arrow svg {
-            width: 24px;
-            height: 24px;
-            color: var(--text-secondary);
+        .word-nav-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
         }
 
-        .carousel-track {
-            position: relative;
-            flex: 1;
-            min-height: 500px;
-            overflow: hidden;
-        }
-
-        .word-card.carousel-card {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            opacity: 0;
-            transform: translateX(60px);
-            transition: opacity 0.4s ease, transform 0.4s ease;
-            pointer-events: none;
-            visibility: hidden;
-        }
-
-        .word-card.carousel-card.active {
-            opacity: 1;
-            transform: translateX(0);
-            pointer-events: auto;
-            position: relative;
-            visibility: visible;
-        }
-
-        .word-card.carousel-card.exit-left {
-            opacity: 0;
-            transform: translateX(-60px);
-            visibility: visible;
-        }
-
-        .word-card.carousel-card.exit-right {
-            opacity: 0;
-            transform: translateX(60px);
-            visibility: visible;
-        }
-
-        .carousel-dots {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 2rem;
-        }
-
-        .carousel-cta {
+        .demo-cta {
             display: flex;
             justify-content: center;
             margin-top: 2rem;
@@ -518,6 +587,45 @@
 
         .btn-large {
             padding: 1rem 2rem;
+            font-size: 1.05rem;
+            background: var(--text-primary);
+            color: white;
+        }
+
+        .btn-large:hover {
+            background: #292524;
+            transform: translateY(-1px);
+        }
+
+        /* Loading state for Start Learning button */
+        .start-learning-btn {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .start-learning-btn.loading {
+            pointer-events: none;
+            color: transparent !important;
+        }
+
+        .start-learning-btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid transparent;
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
             font-size: 1.05rem;
             background: var(--text-primary);
             color: white;
@@ -853,7 +961,7 @@
             <a href="#" class="logo">BridgeWords</a>
             <div class="nav-links">
                 <a href="#how">How It Works</a>
-                <a href="words.html" class="btn btn-primary">Start Learning</a>
+                <a href="words.html" class="btn btn-primary start-learning-btn">Start Learning</a>
             </div>
         </div>
     </nav>
@@ -868,32 +976,42 @@
 
     <section class="demo" id="demo">
         <div class="demo-inner">
-            <p class="section-label reveal">The Bridge Method</p>
-            <h2 class="reveal">One word that unlocks meaning</h2>
-            <p class="demo-subtitle reveal">A Bridge Word is a familiar word or phrase that sounds like the GRE word and connects to its meaning—creating an instant, unforgettable link.</p>
+            <p class="section-label reveal">Experience the Difference</p>
+            <h2 class="reveal">Try it yourself</h2>
+            <p class="demo-subtitle reveal">Toggle between methods and feel the "aha!" moment.</p>
 
-            <div class="examples-carousel reveal">
-                <div class="carousel-container">
-                    <button class="carousel-arrow carousel-prev" aria-label="Previous">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M15 18l-6-6 6-6"/>
-                        </svg>
+            <div class="interactive-demo reveal">
+                <!-- Toggle Switch -->
+                <div class="mode-toggle">
+                    <button class="mode-btn active" data-mode="memorize">
+                        <span class="mode-text">Memorize Mode</span>
                     </button>
+                    <button class="mode-btn" data-mode="bridge">
+                        <span class="mode-text">Bridge Mode</span>
+                    </button>
+                </div>
 
-                    <div class="carousel-track">
-                    <!-- Card 1: Sycophant -->
-                    <div class="word-card carousel-card active">
-                        <div class="word-card-header">
-                            <div>
-                                <div class="gre-word">Sycophant</div>
-                                <div class="pronunciation">/ˈsɪkəfænt/</div>
-                            </div>
-                            <span class="word-type">Noun</span>
+                <!-- Demo Card -->
+                <div class="demo-card">
+                    <div class="word-card-header">
+                        <div>
+                            <div class="gre-word">Sycophant</div>
+                            <div class="pronunciation">/ˈsɪkəfænt/</div>
                         </div>
-                        <div class="meaning-section">
-                            <div class="meaning-label">Meaning</div>
-                            <div class="meaning-text">A person who acts obsequiously towards someone important to gain advantage; a flatterer.</div>
-                        </div>
+                        <span class="word-type">Noun</span>
+                    </div>
+
+                    <div class="meaning-section">
+                        <div class="meaning-label">Meaning</div>
+                        <div class="meaning-text">A person who acts obsequiously towards someone important to gain advantage; a flatterer.</div>
+                    </div>
+
+                    <!-- Memorize Mode Content -->
+                    <div class="mode-content memorize-content active">
+                    </div>
+
+                    <!-- Bridge Mode Content -->
+                    <div class="mode-content bridge-content">
                         <div class="bridge-section">
                             <div class="bridge-label">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -902,128 +1020,22 @@
                                 Bridge Word
                             </div>
                             <div class="bridge-word">"Sick of Ants"</div>
-                            <div class="bridge-explanation">Imagine a powerful person surrounded by annoying ants (flatterers) crawling all over them. They're "sick of ants" — sick of sycophants!</div>
-                        </div>
-                    </div>
-
-                    <!-- Card 2: Abate -->
-                    <div class="word-card carousel-card">
-                        <div class="word-card-header">
-                            <div>
-                                <div class="gre-word">Abate</div>
-                                <div class="pronunciation">/əˈbeɪt/</div>
-                            </div>
-                            <span class="word-type">Verb</span>
-                        </div>
-                        <div class="meaning-section">
-                            <div class="meaning-label">Meaning</div>
-                            <div class="meaning-text">To reduce in intensity or amount; become less.</div>
-                        </div>
-                        <div class="bridge-section">
-                            <div class="bridge-label">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                </svg>
-                                Bridge Word
-                            </div>
-                            <div class="bridge-word">"A Bit"</div>
-                            <div class="bridge-explanation">When something abates, it becomes just "a bit" — it reduces down to a smaller amount.</div>
-                        </div>
-                    </div>
-
-                    <!-- Card 3: Candid -->
-                    <div class="word-card carousel-card">
-                        <div class="word-card-header">
-                            <div>
-                                <div class="gre-word">Candid</div>
-                                <div class="pronunciation">/ˈkændɪd/</div>
-                            </div>
-                            <span class="word-type">Adjective</span>
-                        </div>
-                        <div class="meaning-section">
-                            <div class="meaning-label">Meaning</div>
-                            <div class="meaning-text">Honest and straightforward; frank.</div>
-                        </div>
-                        <div class="bridge-section">
-                            <div class="bridge-label">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                </svg>
-                                Bridge Word
-                            </div>
-                            <div class="bridge-word">"Can't Hide"</div>
-                            <div class="bridge-explanation">A candid person can't hide the truth — they're openly and straightforwardly honest.</div>
-                        </div>
-                    </div>
-
-                    <!-- Card 4: Obfuscate -->
-                    <div class="word-card carousel-card">
-                        <div class="word-card-header">
-                            <div>
-                                <div class="gre-word">Obfuscate</div>
-                                <div class="pronunciation">/ˈɒbfʌskeɪt/</div>
-                            </div>
-                            <span class="word-type">Verb</span>
-                        </div>
-                        <div class="meaning-section">
-                            <div class="meaning-label">Meaning</div>
-                            <div class="meaning-text">To make unclear or confusing; obscure.</div>
-                        </div>
-                        <div class="bridge-section">
-                            <div class="bridge-label">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                </svg>
-                                Bridge Word
-                            </div>
-                            <div class="bridge-word">"Fog"</div>
-                            <div class="bridge-explanation">To obfuscate is to create fog around something — making it unclear and hard to see through.</div>
-                        </div>
-                    </div>
-
-                    <!-- Card 5: Intrepid -->
-                    <div class="word-card carousel-card">
-                        <div class="word-card-header">
-                            <div>
-                                <div class="gre-word">Intrepid</div>
-                                <div class="pronunciation">/ɪnˈtrepɪd/</div>
-                            </div>
-                            <span class="word-type">Adjective</span>
-                        </div>
-                        <div class="meaning-section">
-                            <div class="meaning-label">Meaning</div>
-                            <div class="meaning-text">Fearless and adventurous; brave.</div>
-                        </div>
-                        <div class="bridge-section">
-                            <div class="bridge-label">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                </svg>
-                                Bridge Word
-                            </div>
-                            <div class="bridge-word">"No Trepidation"</div>
-                            <div class="bridge-explanation">An intrepid person has no trepidation (fear) — they're completely fearless and brave.</div>
+                            <div class="bridge-explanation">Imagine a powerful person surrounded by annoying ants (flatterers) crawling all over them, agreeing with everything. They're "sick of ants" — sick of sycophants!</div>
                         </div>
                     </div>
                 </div>
 
-                    <button class="carousel-arrow carousel-next" aria-label="Next">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 18l6-6-6-6"/>
-                        </svg>
-                    </button>
+                <!-- Word Navigation -->
+                <div class="word-nav">
+                    <button class="word-nav-btn" data-word="0">Sycophant</button>
+                    <button class="word-nav-btn" data-word="1">Abate</button>
+                    <button class="word-nav-btn" data-word="2">Candid</button>
+                    <button class="word-nav-btn" data-word="3">Obfuscate</button>
+                    <button class="word-nav-btn" data-word="4">Intrepid</button>
                 </div>
 
-                <div class="carousel-dots">
-                    <button class="carousel-dot active" data-index="0"></button>
-                    <button class="carousel-dot" data-index="1"></button>
-                    <button class="carousel-dot" data-index="2"></button>
-                    <button class="carousel-dot" data-index="3"></button>
-                    <button class="carousel-dot" data-index="4"></button>
-                </div>
-
-                <div class="carousel-cta">
-                    <a href="words.html" class="btn btn-primary btn-large">Start Learning</a>
+                <div class="demo-cta">
+                    <a href="words.html" class="btn btn-primary btn-large start-learning-btn">Start Learning</a>
                 </div>
             </div>
         </div>
@@ -1118,12 +1130,6 @@
     <footer>
         <div class="footer-inner">
             <a href="#" class="footer-logo">BridgeWords</a>
-            <div class="footer-links">
-                <a href="#">About</a>
-                <a href="#">Blog</a>
-                <a href="#">Privacy</a>
-                <a href="#">Terms</a>
-            </div>
             <p class="footer-copy">© 2025 BridgeWords</p>
         </div>
     </footer>
@@ -1164,7 +1170,7 @@
             btn.disabled = true;
             
             // Send to Google Sheets
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbw5ZworKBbXd4a6v9VWev4RUiwd6NKeUMPY6UXRZDZZ8Jvqhj44irOjKYvt8PQjPaQL/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwwlTATXz7j1DCcAJXYpEjsSNllGQzNbKsOy4dU1cZlrdxEFJPzgh06LDHUTw0p-oFt/exec';
             
             fetch(scriptURL + '?email=' + encodeURIComponent(email), {
                 method: 'GET',
@@ -1203,82 +1209,126 @@
             });
         });
 
-        // Examples Carousel
-        const carouselCards = document.querySelectorAll('.word-card.carousel-card');
-        const carouselDots = document.querySelectorAll('.carousel-dot');
-        let currentIndex = 0;
-        let carouselInterval;
-
-        function showCard(index, direction = 'next') {
-            const currentCard = carouselCards[currentIndex];
-            const nextCard = carouselCards[index];
-            
-            // Remove all transition classes
-            carouselCards.forEach(card => {
-                card.classList.remove('active', 'exit-left', 'exit-right');
-            });
-            
-            // Add exit animation to current card
-            if (direction === 'next') {
-                currentCard.classList.add('exit-left');
-            } else {
-                currentCard.classList.add('exit-right');
+        // Interactive Demo
+        const words = [
+            {
+                word: "Sycophant",
+                pronunciation: "/ˈsɪkəfænt/",
+                type: "Noun",
+                meaning: "A person who acts obsequiously towards someone important to gain advantage; a flatterer.",
+                bridge: "Sick of Ants",
+                explanation: "Imagine a powerful person surrounded by annoying ants (flatterers) crawling all over them, agreeing with everything. They're \"sick of ants\" — sick of sycophants!"
+            },
+            {
+                word: "Abate",
+                pronunciation: "/əˈbeɪt/",
+                type: "Verb",
+                meaning: "To reduce in intensity or amount; become less.",
+                bridge: "A Bit",
+                explanation: "When something abates, it becomes just \"a bit\" — it reduces down to a smaller amount."
+            },
+            {
+                word: "Candid",
+                pronunciation: "/ˈkændɪd/",
+                type: "Adjective",
+                meaning: "Honest and straightforward; frank.",
+                bridge: "Can't Hide",
+                explanation: "A candid person can't hide the truth — they're openly and straightforwardly honest."
+            },
+            {
+                word: "Obfuscate",
+                pronunciation: "/ˈɒbfʌskeɪt/",
+                type: "Verb",
+                meaning: "To make unclear or confusing; obscure.",
+                bridge: "Fog",
+                explanation: "To obfuscate is to create fog around something — making it unclear and hard to see through."
+            },
+            {
+                word: "Intrepid",
+                pronunciation: "/ɪnˈtrepɪd/",
+                type: "Adjective",
+                meaning: "Fearless and adventurous; brave.",
+                bridge: "No Trepidation",
+                explanation: "An intrepid person has no trepidation (fear) — they're completely fearless and brave."
             }
+        ];
+
+        let currentWordIndex = 0;
+        let currentMode = 'memorize';
+
+        const modeButtons = document.querySelectorAll('.mode-btn');
+        const wordNavButtons = document.querySelectorAll('.word-nav-btn');
+        const demoCard = document.querySelector('.demo-card');
+        const memorizeContent = document.querySelector('.memorize-content');
+        const bridgeContent = document.querySelector('.bridge-content');
+
+        function updateCard() {
+            const word = words[currentWordIndex];
             
-            // Update dots
-            carouselDots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
+            // Update word info
+            demoCard.querySelector('.gre-word').textContent = word.word;
+            demoCard.querySelector('.pronunciation').textContent = word.pronunciation;
+            demoCard.querySelector('.word-type').textContent = word.type;
+            demoCard.querySelector('.meaning-text').textContent = word.meaning;
+            demoCard.querySelector('.bridge-word').textContent = `"${word.bridge}"`;
+            demoCard.querySelector('.bridge-explanation').textContent = word.explanation;
+            
+            // Update word nav buttons
+            wordNavButtons.forEach((btn, i) => {
+                btn.classList.toggle('active', i === currentWordIndex);
             });
-
-            // Add active class to new card after brief delay
-            setTimeout(() => {
-                currentCard.classList.remove('exit-left', 'exit-right');
-                nextCard.classList.add('active');
-                currentIndex = index;
-            }, 50);
         }
 
-        function nextCard() {
-            const next = (currentIndex + 1) % carouselCards.length;
-            showCard(next, 'next');
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Update toggle buttons
+            modeButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === mode);
+            });
+            
+            // Update card border
+            demoCard.classList.toggle('bridge-active', mode === 'bridge');
+            
+            // Show/hide content
+            if (mode === 'memorize') {
+                memorizeContent.classList.add('active');
+                bridgeContent.classList.remove('active');
+            } else {
+                memorizeContent.classList.remove('active');
+                bridgeContent.classList.add('active');
+            }
         }
 
-        function prevCard() {
-            const prev = (currentIndex - 1 + carouselCards.length) % carouselCards.length;
-            showCard(prev, 'prev');
-        }
-
-        function startCarousel() {
-            carouselInterval = setInterval(nextCard, 12000);
-        }
-
-        function resetCarousel() {
-            clearInterval(carouselInterval);
-            startCarousel();
-        }
-
-        // Click on dots
-        carouselDots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                const direction = index > currentIndex ? 'next' : 'prev';
-                showCard(index, direction);
-                resetCarousel();
+        // Mode toggle click
+        modeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                setMode(btn.dataset.mode);
             });
         });
 
-        // Click on arrows
-        document.querySelector('.carousel-prev').addEventListener('click', () => {
-            prevCard();
-            resetCarousel();
+        // Word navigation click
+        wordNavButtons.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                currentWordIndex = index;
+                updateCard();
+            });
         });
 
-        document.querySelector('.carousel-next').addEventListener('click', () => {
-            nextCard();
-            resetCarousel();
-        });
+        // Initialize first word nav button as active
+        wordNavButtons[0].classList.add('active');
 
-        // Start auto-rotation
-        startCarousel();
+        // Start Learning button loading state
+        document.querySelectorAll('.start-learning-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.classList.add('loading');
+                
+                setTimeout(() => {
+                    window.location.href = this.href;
+                }, 800);
+            });
+        });
     </script>
 </body>
 </html>

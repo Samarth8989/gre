@@ -1155,18 +1155,41 @@
         function handleSubmit(e) {
             e.preventDefault();
             const input = e.target.querySelector('input');
+            const email = input.value;
             const btn = e.target.querySelector('button');
             const originalText = btn.textContent;
             
-            // Show success state
-            btn.textContent = "We'll notify you! 🎉";
-            btn.style.background = '#059669';
-            input.value = '';
+            // Show sending state
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
             
-            setTimeout(() => {
-                btn.textContent = originalText;
-                btn.style.background = '';
-            }, 3000);
+            // Send to Google Sheets
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbw5ZworKBbXd4a6v9VWev4RUiwd6NKeUMPY6UXRZDZZ8Jvqhj44irOjKYvt8PQjPaQL/exec';
+            
+            fetch(scriptURL + '?email=' + encodeURIComponent(email), {
+                method: 'GET',
+                mode: 'no-cors'
+            }).then(() => {
+                btn.textContent = "We'll notify you! 🎉";
+                btn.style.background = '#059669';
+                btn.disabled = false;
+                input.value = '';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 3000);
+            }).catch(() => {
+                btn.textContent = "We'll notify you! 🎉";
+                btn.style.background = '#059669';
+                btn.disabled = false;
+                input.value = '';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 3000);
+            });
         }
 
         // Smooth scroll for anchor links

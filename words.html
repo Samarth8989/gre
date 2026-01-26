@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>25 GRE Words — BridgeWords</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Satoshi:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FAFAF9;
+            --bg-subtle: #F5F5F4;
+            --text-primary: #1C1917;
+            --text-secondary: #57534E;
+            --text-tertiary: #A8A29E;
+            --accent: #2563EB;
+            --accent-soft: #DBEAFE;
+            --border: #E7E5E4;
+            --green: #059669;
+            --green-soft: #D1FAE5;
+            --serif: 'Instrument Serif', Georgia, serif;
+            --sans: 'Satoshi', -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Subtle grain texture */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.3;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            z-index: 1000;
+        }
+
+        /* Navigation */
+        nav {
+            padding: 1.25rem 2rem;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--serif);
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .progress-mini {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-mini strong {
+            color: var(--accent);
+        }
+
+        .btn-back {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .btn-back:hover {
+            color: var(--text-primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem;
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            margin-bottom: 2rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .progress-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-count {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .progress-bar {
+            background: var(--border);
+            border-radius: 100px;
+            height: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 100px;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* Card Container */
+        .card-container {
+            position: relative;
+            min-height: 420px;
+        }
+
+        /* Word Card */
+        .word-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 
+                0 1px 2px rgba(0,0,0,0.04),
+                0 8px 32px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .word-card.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+            position: relative;
+        }
+
+        .word-card.exit-left {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+
+        .word-card.learned {
+            border-color: var(--green);
+        }
+
+        .word-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .word-number {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            background: var(--accent-soft);
+            padding: 0.35rem 0.75rem;
+            border-radius: 100px;
+        }
+
+        .word-type {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            padding: 0.4rem 0.8rem;
+            background: var(--bg-subtle);
+            border-radius: 6px;
+        }
+
+        .gre-word {
+            font-family: var(--serif);
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            margin: 1rem 0 0.5rem;
+        }
+
+        .meaning-text {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        /* Bridge Section */
+        .bridge-section {
+            background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bridge-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), #60A5FA);
+        }
+
+        .bridge-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .bridge-label svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .bridge-word {
+            font-family: var(--serif);
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .bridge-explanation {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Navigation Controls */
+        .card-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.5rem;
+            font-family: var(--sans);
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .nav-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .nav-btn-prev {
+            background: var(--bg-subtle);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .nav-btn-prev:hover:not(:disabled) {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+
+        .nav-btn-prev:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .nav-btn-next {
+            background: var(--text-primary);
+            color: white;
+        }
+
+        .nav-btn-next:hover {
+            background: #292524;
+            transform: translateY(-1px);
+        }
+
+        .learn-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.25rem;
+            font-family: var(--sans);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--green);
+            background: var(--green-soft);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .learn-btn:hover {
+            border-color: var(--green);
+        }
+
+        .learn-btn.learned {
+            background: var(--green);
+            color: white;
+        }
+
+        .learn-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Completion Screen */
+        .completion-screen {
+            text-align: center;
+            padding: 3rem;
+            display: none;
+        }
+
+        .completion-screen.active {
+            display: block;
+        }
+
+        .completion-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--green-soft);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .completion-icon svg {
+            width: 40px;
+            height: 40px;
+            color: var(--green);
+        }
+
+        .completion-screen h2 {
+            font-family: var(--serif);
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .completion-screen p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .completion-cta {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        .cta-input {
+            padding: 1rem 1.25rem;
+            font-family: var(--sans);
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: white;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .cta-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .btn-primary {
+            padding: 1rem 1.5rem;
+            font-family: var(--sans);
+            font-size: 1rem;
+            font-weight: 600;
+            background: var(--text-primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: #292524;
+        }
+
+        .btn-secondary {
+            padding: 1rem 1.5rem;
+            font-family: var(--sans);
+            font-size: 1rem;
+            font-weight: 600;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-subtle);
+            color: var(--text-primary);
+        }
+
+        /* Keyboard hint */
+        .keyboard-hint {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+        }
+
+        .keyboard-hint kbd {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            font-family: var(--sans);
+            font-size: 0.8rem;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin: 0 0.15rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1.5rem;
+            }
+
+            .word-card {
+                padding: 1.75rem;
+            }
+
+            .gre-word {
+                font-size: 2.25rem;
+            }
+
+            .card-nav {
+                flex-wrap: wrap;
+            }
+
+            .nav-btn {
+                padding: 0.8rem 1.25rem;
+            }
+
+            .keyboard-hint {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-inner">
+            <a href="index.html" class="logo">BridgeWords</a>
+            <div class="nav-right">
+                <span class="progress-mini"><strong id="learned-nav">0</strong> learned</span>
+                <a href="index.html" class="btn-back">← Back</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="progress-section">
+            <div class="progress-header">
+                <span class="progress-label">Your progress</span>
+                <span class="progress-count"><span id="current-num">1</span> of 25</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="card-container" id="card-container">
+            <!-- Cards will be inserted by JavaScript -->
+        </div>
+
+        <div class="card-nav" id="card-nav">
+            <button class="nav-btn nav-btn-prev" id="prev-btn" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+                Previous
+            </button>
+            <button class="learn-btn" id="learn-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 6L9 17l-5-5"/>
+                </svg>
+                <span>Got it!</span>
+            </button>
+            <button class="nav-btn nav-btn-next" id="next-btn">
+                Next
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="keyboard-hint">
+            Use <kbd>←</kbd> <kbd>→</kbd> arrow keys to navigate, <kbd>Space</kbd> to mark as learned
+        </div>
+
+        <!-- Completion Screen -->
+        <div class="completion-screen" id="completion-screen">
+            <div class="completion-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 6L9 17l-5-5"/>
+                </svg>
+            </div>
+            <h2>You've seen all 25 words!</h2>
+            <p>You've learned <strong id="final-count">0</strong> words. Want to be notified when we launch 1,000+ more?</p>
+            <form class="completion-cta" onsubmit="handleSubmit(event)">
+                <input type="email" class="cta-input" placeholder="Enter your email" required>
+                <button type="submit" class="btn-primary">Notify Me at Launch</button>
+                <button type="button" class="btn-secondary" onclick="restart()">Review Words Again</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        const words = [
+            { word: "Espouse", type: "Verb", meaning: "To support or adopt a cause, belief, or way of life", bridge: "Spouse", explanation: "You support your spouse — just like you espouse a cause you believe in." },
+            { word: "Exacting", type: "Adjective", meaning: "Demanding accuracy and precision; very strict", bridge: "Exact", explanation: "Someone exacting demands things to be exact — perfectly accurate." },
+            { word: "Underscore", type: "Verb", meaning: "To emphasize or give extra weight to something", bridge: "Underline", explanation: "When you underline something, you highlight its importance — you underscore it." },
+            { word: "Ignoble", type: "Adjective", meaning: "Not honorable in character or purpose; shameful", bridge: "Ignorant Noble", explanation: "A noble who acts ignorantly, without honor — that's ignoble behavior." },
+            { word: "Hackneyed", type: "Adjective", meaning: "Overused and unoriginal; lacking freshness", bridge: "Hacked", explanation: "Content that's been hacked and copied everywhere becomes hackneyed — stale and overused." },
+            { word: "Abate", type: "Verb", meaning: "To reduce in intensity or amount; become less", bridge: "A Bit", explanation: "When something abates, it becomes just 'a bit' — it reduces down." },
+            { word: "Candid", type: "Adjective", meaning: "Honest and straightforward; frank", bridge: "Can't Hide", explanation: "A candid person can't hide the truth — they're openly honest." },
+            { word: "Covert", type: "Adjective", meaning: "Hidden or secret; not openly shown", bridge: "Cover", explanation: "Something covert is covered up — hidden from view." },
+            { word: "Defer", type: "Verb", meaning: "To postpone or put off to a later time", bridge: "Delay", explanation: "To defer is to delay — both mean pushing something to later." },
+            { word: "Delineate", type: "Verb", meaning: "To describe or outline with precision", bridge: "Line", explanation: "To delineate is to draw clear lines — defining something precisely." },
+            { word: "Egregious", type: "Adjective", meaning: "Outstandingly bad; shockingly terrible", bridge: "Eww-gregious", explanation: "Something so bad it makes you say 'eww!' — that's egregious." },
+            { word: "Enigma", type: "Noun", meaning: "A mystery or puzzle; something hard to understand", bridge: "Enigmatic", explanation: "An enigma is enigmatic — mysterious and puzzling." },
+            { word: "Exacerbate", type: "Verb", meaning: "To make a problem or situation worse", bridge: "Extra + Bad", explanation: "To exacerbate is to add extra bad — making things worse." },
+            { word: "Garrulous", type: "Adjective", meaning: "Excessively talkative, especially about trivial things", bridge: "Garr-garr-garr", explanation: "A garrulous person goes 'garr-garr-garr' — they just won't stop talking!" },
+            { word: "Impetuous", type: "Adjective", meaning: "Acting quickly without thought; impulsive", bridge: "Impulse", explanation: "Impetuous people act on impulse — sudden and unthinking." },
+            { word: "Inhibit", type: "Verb", meaning: "To prevent or hold back; restrain", bridge: "In + Habit", explanation: "Old habits inhibit change — they hold you back from new behaviors." },
+            { word: "Intrepid", type: "Adjective", meaning: "Fearless and adventurous; brave", bridge: "No Trepidation", explanation: "An intrepid person has no trepidation (fear) — they're completely fearless." },
+            { word: "Lucid", type: "Adjective", meaning: "Clear and easy to understand; mentally sharp", bridge: "Laser-Clear", explanation: "Lucid thinking is laser-clear — bright and perfectly understandable." },
+            { word: "Mitigate", type: "Verb", meaning: "To make less severe or serious; reduce harm", bridge: "Mini-gate", explanation: "To mitigate is to make something mini — reducing its severity." },
+            { word: "Obfuscate", type: "Verb", meaning: "To make unclear or confusing; obscure", bridge: "Fog", explanation: "To obfuscate is to create fog — making things unclear and hard to see." },
+            { word: "Pragmatic", type: "Adjective", meaning: "Dealing with things sensibly and practically", bridge: "Practical", explanation: "Pragmatic means practical — focused on what actually works." },
+            { word: "Prolific", type: "Adjective", meaning: "Producing much output; highly productive", bridge: "Produce a Lot", explanation: "A prolific writer produces a lot — they're extremely productive." },
+            { word: "Relegate", type: "Verb", meaning: "To assign to a lower position or less important status", bridge: "Pushed Down", explanation: "To relegate is to push something down — demoting it to a lower position." },
+            { word: "Scrutinize", type: "Verb", meaning: "To examine very closely and carefully", bridge: "Screw + Tiny", explanation: "To scrutinize is to examine every tiny screw — checking every small detail." },
+            { word: "Trivial", type: "Adjective", meaning: "Of little importance or value; minor", bridge: "Tiny", explanation: "Trivial matters are tiny — too small to be important." }
+        ];
+
+        let currentIndex = 0;
+        let learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+
+        const cardContainer = document.getElementById('card-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const learnBtn = document.getElementById('learn-btn');
+        const cardNav = document.getElementById('card-nav');
+        const completionScreen = document.getElementById('completion-screen');
+
+        function createCard(wordData, index) {
+            const isLearned = learnedWords.includes(index);
+            const card = document.createElement('div');
+            card.className = `word-card ${isLearned ? 'learned' : ''}`;
+            card.dataset.index = index;
+            card.innerHTML = `
+                <div class="word-card-top">
+                    <span class="word-number">${index + 1} / 25</span>
+                    <span class="word-type">${wordData.type}</span>
+                </div>
+                <div class="gre-word">${wordData.word}</div>
+                <div class="meaning-text">${wordData.meaning}</div>
+                <div class="bridge-section">
+                    <div class="bridge-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        Bridge Word
+                    </div>
+                    <div class="bridge-word">"${wordData.bridge}"</div>
+                    <div class="bridge-explanation">${wordData.explanation}</div>
+                </div>
+            `;
+            return card;
+        }
+
+        function renderCards() {
+            cardContainer.innerHTML = '';
+            words.forEach((word, index) => {
+                const card = createCard(word, index);
+                if (index === currentIndex) {
+                    card.classList.add('active');
+                }
+                cardContainer.appendChild(card);
+            });
+        }
+
+        function showCard(newIndex, direction = 'next') {
+            const cards = document.querySelectorAll('.word-card');
+            const currentCard = cards[currentIndex];
+            const newCard = cards[newIndex];
+
+            // Exit animation
+            currentCard.classList.remove('active');
+            currentCard.classList.add(direction === 'next' ? 'exit-left' : '');
+
+            // Enter animation
+            setTimeout(() => {
+                currentCard.classList.remove('exit-left');
+                newCard.classList.add('active');
+                currentIndex = newIndex;
+                updateUI();
+            }, 50);
+        }
+
+        function updateUI() {
+            // Update progress
+            document.getElementById('current-num').textContent = currentIndex + 1;
+            document.getElementById('progress-fill').style.width = ((currentIndex + 1) / 25 * 100) + '%';
+            document.getElementById('learned-nav').textContent = learnedWords.length;
+
+            // Update buttons
+            prevBtn.disabled = currentIndex === 0;
+            
+            if (currentIndex === 24) {
+                nextBtn.innerHTML = `
+                    Finish
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                `;
+            } else {
+                nextBtn.innerHTML = `
+                    Next
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                `;
+            }
+
+            // Update learn button
+            const isLearned = learnedWords.includes(currentIndex);
+            learnBtn.classList.toggle('learned', isLearned);
+            learnBtn.querySelector('span').textContent = isLearned ? 'Learned!' : 'Got it!';
+        }
+
+        function goNext() {
+            if (currentIndex < 24) {
+                showCard(currentIndex + 1, 'next');
+            } else {
+                showCompletion();
+            }
+        }
+
+        function goPrev() {
+            if (currentIndex > 0) {
+                showCard(currentIndex - 1, 'prev');
+            }
+        }
+
+        function toggleLearned() {
+            if (learnedWords.includes(currentIndex)) {
+                learnedWords = learnedWords.filter(i => i !== currentIndex);
+            } else {
+                learnedWords.push(currentIndex);
+            }
+            localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+            
+            const card = document.querySelector(`.word-card[data-index="${currentIndex}"]`);
+            card.classList.toggle('learned', learnedWords.includes(currentIndex));
+            
+            updateUI();
+        }
+
+        function showCompletion() {
+            cardContainer.style.display = 'none';
+            cardNav.style.display = 'none';
+            document.querySelector('.keyboard-hint').style.display = 'none';
+            document.querySelector('.progress-section').style.display = 'none';
+            
+            document.getElementById('final-count').textContent = learnedWords.length;
+            completionScreen.classList.add('active');
+        }
+
+        function restart() {
+            currentIndex = 0;
+            cardContainer.style.display = 'block';
+            cardNav.style.display = 'flex';
+            document.querySelector('.keyboard-hint').style.display = 'block';
+            document.querySelector('.progress-section').style.display = 'block';
+            completionScreen.classList.remove('active');
+            
+            renderCards();
+            updateUI();
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const input = e.target.querySelector('input');
+            const btn = e.target.querySelector('.btn-primary');
+            const originalText = btn.textContent;
+            
+            // Show success state
+            btn.textContent = "We'll notify you! 🎉";
+            btn.style.background = '#059669';
+            input.value = '';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 3000);
+        }
+
+        // Event listeners
+        prevBtn.addEventListener('click', goPrev);
+        nextBtn.addEventListener('click', goNext);
+        learnBtn.addEventListener('click', toggleLearned);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (completionScreen.classList.contains('active')) return;
+            
+            if (e.key === 'ArrowRight') {
+                goNext();
+            } else if (e.key === 'ArrowLeft') {
+                goPrev();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                toggleLearned();
+            }
+        });
+
+        // Initialize
+        renderCards();
+        updateUI();
+    </script>
+</body>
+</html>

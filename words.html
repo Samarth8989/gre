@@ -562,7 +562,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M20 6L9 17l-5-5"/>
                 </svg>
-                <span>I know this</span>
+                <span>Mark as Known</span>
             </button>
             <button class="nav-btn nav-btn-next" id="next-btn">
                 Next
@@ -711,7 +711,7 @@
             // Update learn button
             const isLearned = learnedWords.includes(currentIndex);
             learnBtn.classList.toggle('learned', isLearned);
-            learnBtn.querySelector('span').textContent = isLearned ? 'Learned!' : 'I know this';
+            learnBtn.querySelector('span').textContent = isLearned ? 'Known' : 'Mark as Known';
         }
 
         function goNext() {

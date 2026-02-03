@@ -246,6 +246,188 @@
             }
         }
 
+        /* Card Stack Animation */
+        .score-animation {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .card-stack-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 3rem;
+            height: 200px;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-area {
+            width: 120px;
+            height: 70px;
+            perspective: 600px;
+        }
+
+        .active-card {
+            width: 120px;
+            height: 70px;
+            position: relative;
+            transform-style: preserve-3d;
+            opacity: 0;
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--sans);
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card-front {
+            background: white;
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .card-back {
+            background: var(--text-primary);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .active-card.blue .card-front {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .active-card.blue .card-back {
+            background: var(--accent);
+        }
+
+        .active-card.show {
+            opacity: 1;
+            animation: cardAppear 0.2s ease;
+        }
+
+        .active-card.flip {
+            animation: cardFlip 0.3s ease forwards;
+        }
+
+        .active-card.move {
+            animation: cardMove 0.2s ease forwards;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes cardFlip {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(180deg); }
+        }
+
+        @keyframes cardMove {
+            to {
+                opacity: 0;
+                transform: translateX(80px) scale(0.6);
+            }
+        }
+
+        .stack-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stack-area {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            gap: 4px;
+            min-width: 80px;
+            min-height: 120px;
+        }
+
+        .stacked-card {
+            width: 80px;
+            height: 10px;
+            background: var(--border);
+            border-radius: 2px;
+            animation: stackIn 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .stacked-card.blue {
+            background: var(--accent);
+        }
+
+        @keyframes stackIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .stack-area.blink .stacked-card:last-child {
+            animation: blink 0.8s ease 2;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        .stack-label {
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .score-tagline {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent);
+            opacity: 0;
+            margin-top: 2rem;
+        }
+
+        .score-tagline.show {
+            opacity: 1;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* Demo Section */
         .demo {
             padding: 6rem 2rem;
@@ -946,7 +1128,21 @@
     </nav>
 
     <section class="hero">
-        <h1>Stop forgetting GRE words. <em>Start recalling them instantly.</em></h1>
+        <div class="score-animation">
+            <div class="card-stack-container">
+                <div class="card-area">
+                    <div class="active-card" id="active-card">
+                        <div class="card-front"></div>
+                        <div class="card-back"></div>
+                    </div>
+                </div>
+                <div class="stack-wrapper">
+                    <div class="stack-area" id="stack-area"></div>
+                    <div class="stack-label">Learnt</div>
+                </div>
+            </div>
+            <div class="score-tagline">Remember more. Score more.</div>
+        </div>
         <p class="hero-subtitle">Learn with small memory hooks that make meanings stick in less time.</p>
         <div class="hero-cta">
             <a href="#demo" class="btn btn-primary">See How It Works</a>
@@ -957,23 +1153,11 @@
         <div class="demo-inner">
             <p class="section-label reveal">Experience the Difference</p>
             <h2 class="reveal">Try it yourself</h2>
-            <p class="demo-subtitle reveal">Toggle between methods and feel the "aha!" moment.</p>
+            <p class="demo-subtitle reveal">See how Bridge Words make meanings stick instantly.</p>
 
             <div class="interactive-demo reveal">
-                <!-- Toggle Switch -->
-                <div class="mode-toggle">
-                    <button class="mode-btn active" data-mode="memorize">
-                        <span class="mode-emoji">😵‍💫</span>
-                        <span class="mode-text">Memorize Mode</span>
-                    </button>
-                    <button class="mode-btn" data-mode="bridge">
-                        <span class="mode-emoji">⚡</span>
-                        <span class="mode-text">Bridge Mode</span>
-                    </button>
-                </div>
-
-                <!-- Demo Card -->
-                <div class="demo-card">
+                <!-- Demo Card - Bridge Mode Only -->
+                <div class="demo-card bridge-active">
                     <div class="word-card-header">
                         <div>
                             <div class="gre-word">Sycophant</div>
@@ -987,15 +1171,8 @@
                         <div class="meaning-text">A person who acts obsequiously towards someone important to gain advantage; a flatterer.</div>
                     </div>
 
-                    <!-- Memorize Mode Content (empty - just word and meaning) -->
-                    <div class="mode-content memorize-content active">
-                        <div class="memorize-hint">
-                            <p>That's it. Just read and repeat until it sticks... hopefully 😅</p>
-                        </div>
-                    </div>
-
                     <!-- Bridge Mode Content -->
-                    <div class="mode-content bridge-content">
+                    <div class="mode-content bridge-content active">
                         <div class="bridge-section">
                             <div class="bridge-label">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1011,7 +1188,7 @@
 
                 <!-- Word Navigation -->
                 <div class="word-nav">
-                    <button class="word-nav-btn" data-word="0">Sycophant</button>
+                    <button class="word-nav-btn active" data-word="0">Sycophant</button>
                     <button class="word-nav-btn" data-word="1">Abate</button>
                     <button class="word-nav-btn" data-word="2">Candid</button>
                     <button class="word-nav-btn" data-word="3">Obfuscate</button>
@@ -1240,11 +1417,8 @@
         let currentWordIndex = 0;
         let currentMode = 'memorize';
 
-        const modeButtons = document.querySelectorAll('.mode-btn');
         const wordNavButtons = document.querySelectorAll('.word-nav-btn');
         const demoCard = document.querySelector('.demo-card');
-        const memorizeContent = document.querySelector('.memorize-content');
-        const bridgeContent = document.querySelector('.bridge-content');
 
         function updateCard() {
             const word = words[currentWordIndex];
@@ -1263,34 +1437,6 @@
             });
         }
 
-        function setMode(mode) {
-            currentMode = mode;
-            
-            // Update toggle buttons
-            modeButtons.forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.mode === mode);
-            });
-            
-            // Update card border
-            demoCard.classList.toggle('bridge-active', mode === 'bridge');
-            
-            // Show/hide content
-            if (mode === 'memorize') {
-                memorizeContent.classList.add('active');
-                bridgeContent.classList.remove('active');
-            } else {
-                memorizeContent.classList.remove('active');
-                bridgeContent.classList.add('active');
-            }
-        }
-
-        // Mode toggle click
-        modeButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                setMode(btn.dataset.mode);
-            });
-        });
-
         // Word navigation click
         wordNavButtons.forEach((btn, index) => {
             btn.addEventListener('click', () => {
@@ -1299,8 +1445,123 @@
             });
         });
 
-        // Initialize first word nav button as active
-        wordNavButtons[0].classList.add('active');
+        // Card Stack Animation
+        const activeCard = document.getElementById('active-card');
+        const cardFront = activeCard.querySelector('.card-front');
+        const cardBack = activeCard.querySelector('.card-back');
+        const stackArea = document.getElementById('stack-area');
+        const tagline = document.querySelector('.score-tagline');
+        
+        // Words for animation (gray phase)
+        const grayWords = [
+            { word: 'Tyro', meaning: 'Beginner' },
+            { word: 'Arrogate', meaning: 'Take without right' },
+            { word: 'Levity', meaning: 'Lack of seriousness' },
+            { word: 'Venerate', meaning: 'Respect deeply' }
+        ];
+        
+        // Words for animation (blue phase - fast, no flip)
+        const blueWords = [
+            { word: 'Anachronism', meaning: 'Misplaced in time' },
+            { word: 'Whimsical', meaning: 'Playfully unpredictable' },
+            { word: 'Apathy', meaning: 'Lack of interest' },
+            { word: 'Empathy', meaning: 'Feel others\' feelings' },
+            { word: 'Pragmatic', meaning: 'Practical' },
+            { word: 'Cynical', meaning: 'Distrust motives' },
+            { word: 'Meticulous', meaning: 'Detail-focused' },
+            { word: 'Egregious', meaning: 'Shockingly bad' },
+            { word: 'Candor', meaning: 'Honest, frank' },
+            { word: 'Laconic', meaning: 'Brief, few words' },
+            { word: 'Garrulous', meaning: 'Talkative' },
+            { word: 'Ambivalent', meaning: 'Mixed feelings' },
+            { word: 'Mitigate', meaning: 'Make less severe' },
+            { word: 'Alleviate', meaning: 'Relieve pain' },
+            { word: 'Obfuscate', meaning: 'Make unclear' },
+            { word: 'Elucidate', meaning: 'Make clear' },
+            { word: 'Repudiate', meaning: 'Reject, deny' },
+            { word: 'Vindicate', meaning: 'Prove right' },
+            { word: 'Ubiquitous', meaning: 'Present everywhere' },
+            { word: 'Frugal', meaning: 'Economical' }
+        ];
+        
+        let cardCount = 0;
+        let isBlue = false;
+        
+        function addCardToStack() {
+            const card = document.createElement('div');
+            card.className = 'stacked-card' + (isBlue ? ' blue' : '');
+            stackArea.appendChild(card);
+        }
+        
+        // Full animation with flip (for first 2 cards)
+        function animateCardWithFlip() {
+            const currentWord = grayWords[cardCount];
+            
+            cardFront.textContent = currentWord.word;
+            cardBack.textContent = currentWord.meaning;
+            
+            activeCard.className = 'active-card show';
+            
+            setTimeout(() => {
+                activeCard.classList.add('flip');
+                
+                setTimeout(() => {
+                    activeCard.classList.remove('flip');
+                    activeCard.classList.add('move');
+                    
+                    setTimeout(() => {
+                        addCardToStack();
+                        activeCard.className = 'active-card';
+                        cardCount++;
+                        
+                        if (cardCount < 2) {
+                            setTimeout(animateCardWithFlip, 1500);
+                        } else {
+                            // Add remaining 2 gray cards fast
+                            setTimeout(animateGrayFast, 300);
+                        }
+                    }, 200);
+                }, 400);
+            }, 600);
+        }
+        
+        // Fast gray cards (cards 3-4)
+        function animateGrayFast() {
+            if (cardCount < 4) {
+                addCardToStack();
+                cardCount++;
+                setTimeout(animateGrayFast, 150);
+            } else {
+                // Pause then switch to blue
+                stackArea.classList.add('blink');
+                setTimeout(() => {
+                    stackArea.classList.remove('blink');
+                    isBlue = true;
+                    setTimeout(animateCardFast, 300);
+                }, 1000);
+            }
+        }
+        
+        // Fast blue animation - no flip, just flow to stack
+        function animateCardFast() {
+            const wordIndex = cardCount - 4;
+            if (wordIndex >= blueWords.length) {
+                console.log('Animation complete, showing tagline');
+                setTimeout(() => {
+                    const tl = document.querySelector('.score-tagline');
+                    tl.classList.add('show');
+                    tl.style.opacity = '1';
+                }, 400);
+                return;
+            }
+            
+            addCardToStack();
+            cardCount++;
+            setTimeout(animateCardFast, 100);
+        }
+        
+        // Start animation after page load
+        setTimeout(animateCardWithFlip, 400);
     </script>
 </body>
 </html>

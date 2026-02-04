@@ -215,12 +215,13 @@
         }
 
         .hero-subtitle {
-            font-size: 1.1rem;
+            font-size: 1.35rem;
             color: var(--text-secondary);
-            max-width: 400px;
-            margin-top: 1rem;
+            max-width: 450px;
+            margin-top: 1.5rem;
             opacity: 0;
-            text-align: center;
+            text-align: left;
+            line-height: 1.5;
         }
 
         .hero-subtitle.show {
@@ -252,18 +253,25 @@
         }
 
         /* Card Stack Animation */
+        .hero-layout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
         .score-animation {
-            text-align: center;
-            margin-bottom: 2.5rem;
+            flex-shrink: 0;
         }
 
         .card-stack-container {
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            gap: 3rem;
-            height: 200px;
-            margin-bottom: 1.5rem;
+            gap: 2rem;
+            height: 180px;
         }
 
         .card-area {
@@ -281,17 +289,16 @@
         .hero-text {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            margin-top: 2rem;
-            /* Offset to align with stack (card-area width + gap) / 2 */
-            margin-left: calc((120px + 3rem) / 2);
+            align-items: flex-start;
+            text-align: left;
         }
 
         .score-tagline {
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 4rem;
+            font-weight: 700;
             color: var(--accent);
             opacity: 0;
+            line-height: 1.1;
         }
 
         .score-tagline.show {
@@ -1108,9 +1115,22 @@
                 padding: 5rem 1.5rem 3rem;
             }
 
-            .card-stack-container {
+            .hero-layout {
                 flex-direction: column;
+                gap: 2.5rem;
+            }
+
+            .hero-text {
                 align-items: center;
+                text-align: center;
+                order: 2;
+            }
+
+            .score-animation {
+                order: 1;
+            }
+
+            .card-stack-container {
                 gap: 1.5rem;
                 height: auto;
             }
@@ -1124,27 +1144,19 @@
                 font-size: 0.75rem;
             }
 
-            .stack-area {
-                min-height: 80px;
-            }
-
             .stacked-card {
                 width: 60px;
                 height: 8px;
             }
 
-            .hero-text {
-                margin-left: 0;
-                margin-top: 1.5rem;
-            }
-
             .score-tagline {
-                font-size: 1.25rem;
+                font-size: 1.5rem;
             }
 
             .hero-subtitle {
-                font-size: 0.95rem;
+                font-size: 1rem;
                 max-width: 300px;
+                text-align: center;
             }
 
             .word-nav {
@@ -1216,24 +1228,26 @@
     </nav>
 
     <section class="hero">
-        <div class="score-animation">
-            <div class="card-stack-container">
-                <div class="card-area">
-                    <div class="active-card" id="active-card">
-                        <div class="card-front"></div>
-                        <div class="card-back"></div>
-                    </div>
-                </div>
-                <div class="stack-wrapper">
-                    <div class="stack-area" id="stack-area"></div>
-                    <div class="stack-label">Learnt</div>
-                </div>
-            </div>
+        <div class="hero-layout">
             <div class="hero-text">
                 <div class="score-tagline">Remember more. Score more.</div>
-                <p class="hero-subtitle">Learn with small memory hooks that make meanings stick in less time.</p>
+                <p class="hero-subtitle">Learn GRE words with small memory hooks that make meanings stick in less time.</p>
                 <div class="hero-cta">
                     <a href="#demo" class="btn btn-primary">See How It Works</a>
+                </div>
+            </div>
+            <div class="score-animation">
+                <div class="card-stack-container">
+                    <div class="card-area">
+                        <div class="active-card" id="active-card">
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                    <div class="stack-wrapper">
+                        <div class="stack-area" id="stack-area"></div>
+                        <div class="stack-label">Learnt</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1246,43 +1260,36 @@
             <p class="demo-subtitle reveal">See how Bridge Words make meanings stick instantly.</p>
 
             <div class="interactive-demo reveal">
-                <!-- Demo Card - Bridge Mode Only -->
+                <!-- Demo Card - Matching words.html format -->
                 <div class="demo-card bridge-active">
                     <div class="word-card-header">
                         <div>
-                            <div class="gre-word">Sycophant</div>
-                            <div class="pronunciation">/ˈsɪkəfænt/</div>
+                            <div class="gre-word">Tyro</div>
                         </div>
                         <span class="word-type">Noun</span>
                     </div>
 
-                    <div class="meaning-section">
-                        <div class="meaning-label">Meaning</div>
-                        <div class="meaning-text">A person who acts obsequiously towards someone important to gain advantage; a flatterer.</div>
-                    </div>
+                    <div class="meaning-text">Beginner</div>
 
-                    <!-- Bridge Mode Content -->
-                    <div class="mode-content bridge-content active">
-                        <div class="bridge-section">
-                            <div class="bridge-label">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                </svg>
-                                Bridge Word
-                            </div>
-                            <div class="bridge-word">"Sick of Ants"</div>
-                            <div class="bridge-explanation">Imagine a powerful person surrounded by annoying ants (flatterers) crawling all over them, agreeing with everything. They're "sick of ants" — sick of sycophants!</div>
+                    <!-- Bridge Section -->
+                    <div class="bridge-section">
+                        <div class="bridge-label">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                            Bridge Word
                         </div>
+                        <div class="bridge-word">"TRY-ro ⇒ try new"</div>
                     </div>
                 </div>
 
                 <!-- Word Navigation -->
                 <div class="word-nav">
-                    <button class="word-nav-btn active" data-word="0">Sycophant</button>
-                    <button class="word-nav-btn" data-word="1">Abate</button>
-                    <button class="word-nav-btn" data-word="2">Candid</button>
+                    <button class="word-nav-btn active" data-word="0">Tyro</button>
+                    <button class="word-nav-btn" data-word="1">Levity</button>
+                    <button class="word-nav-btn" data-word="2">Mitigate</button>
                     <button class="word-nav-btn" data-word="3">Obfuscate</button>
-                    <button class="word-nav-btn" data-word="4">Intrepid</button>
+                    <button class="word-nav-btn" data-word="4">Ubiquitous</button>
                 </div>
 
                 <div class="demo-cta">
@@ -1462,50 +1469,14 @@
 
         // Interactive Demo
         const words = [
-            {
-                word: "Sycophant",
-                pronunciation: "/ˈsɪkəfænt/",
-                type: "Noun",
-                meaning: "A person who acts obsequiously towards someone important to gain advantage; a flatterer.",
-                bridge: "Sick of Ants",
-                explanation: "Imagine a powerful person surrounded by annoying ants (flatterers) crawling all over them, agreeing with everything. They're \"sick of ants\" — sick of sycophants!"
-            },
-            {
-                word: "Abate",
-                pronunciation: "/əˈbeɪt/",
-                type: "Verb",
-                meaning: "To reduce in intensity or amount; become less.",
-                bridge: "A Bit",
-                explanation: "When something abates, it becomes just \"a bit\" — it reduces down to a smaller amount."
-            },
-            {
-                word: "Candid",
-                pronunciation: "/ˈkændɪd/",
-                type: "Adjective",
-                meaning: "Honest and straightforward; frank.",
-                bridge: "Can't Hide",
-                explanation: "A candid person can't hide the truth — they're openly and straightforwardly honest."
-            },
-            {
-                word: "Obfuscate",
-                pronunciation: "/ˈɒbfʌskeɪt/",
-                type: "Verb",
-                meaning: "To make unclear or confusing; obscure.",
-                bridge: "Fog",
-                explanation: "To obfuscate is to create fog around something — making it unclear and hard to see through."
-            },
-            {
-                word: "Intrepid",
-                pronunciation: "/ɪnˈtrepɪd/",
-                type: "Adjective",
-                meaning: "Fearless and adventurous; brave.",
-                bridge: "No Trepidation",
-                explanation: "An intrepid person has no trepidation (fear) — they're completely fearless and brave."
-            }
+            { word: "Tyro", type: "Noun", meaning: "Beginner", bridge: "TRY-ro ⇒ try new" },
+            { word: "Levity", type: "Noun", meaning: "Lack of seriousness", bridge: "leave it yaar (casual attitude / not serious)" },
+            { word: "Mitigate", type: "Verb", meaning: "Make less severe", bridge: "mitti pao" },
+            { word: "Obfuscate", type: "Verb", meaning: "Make unclear; confuse", bridge: "fuse ⇒ confuse" },
+            { word: "Ubiquitous", type: "Adjective", meaning: "Present everywhere", bridge: "ubi ⇒ you be (har jagah)" }
         ];
 
         let currentWordIndex = 0;
-        let currentMode = 'memorize';
 
         const wordNavButtons = document.querySelectorAll('.word-nav-btn');
         const demoCard = document.querySelector('.demo-card');
@@ -1515,11 +1486,9 @@
             
             // Update word info
             demoCard.querySelector('.gre-word').textContent = word.word;
-            demoCard.querySelector('.pronunciation').textContent = word.pronunciation;
             demoCard.querySelector('.word-type').textContent = word.type;
             demoCard.querySelector('.meaning-text').textContent = word.meaning;
             demoCard.querySelector('.bridge-word').textContent = `"${word.bridge}"`;
-            demoCard.querySelector('.bridge-explanation').textContent = word.explanation;
             
             // Update word nav buttons
             wordNavButtons.forEach((btn, i) => {
@@ -1545,33 +1514,17 @@
         // Words for animation (gray phase)
         const grayWords = [
             { word: 'Tyro', meaning: 'Beginner' },
-            { word: 'Arrogate', meaning: 'Take without right' },
-            { word: 'Levity', meaning: 'Lack of seriousness' },
-            { word: 'Venerate', meaning: 'Respect deeply' }
+            { word: 'Arrogate', meaning: 'Take without right' }
         ];
         
         // Words for animation (blue phase - fast, no flip)
         const blueWords = [
-            { word: 'Anachronism', meaning: 'Misplaced in time' },
-            { word: 'Whimsical', meaning: 'Playfully unpredictable' },
-            { word: 'Apathy', meaning: 'Lack of interest' },
-            { word: 'Empathy', meaning: 'Feel others\' feelings' },
+            { word: 'Levity', meaning: 'Lack of seriousness' },
+            { word: 'Venerate', meaning: 'Respect deeply' },
+            { word: 'Whimsical', meaning: 'Playful' },
             { word: 'Pragmatic', meaning: 'Practical' },
-            { word: 'Cynical', meaning: 'Distrust motives' },
-            { word: 'Meticulous', meaning: 'Detail-focused' },
-            { word: 'Egregious', meaning: 'Shockingly bad' },
-            { word: 'Candor', meaning: 'Honest, frank' },
-            { word: 'Laconic', meaning: 'Brief, few words' },
-            { word: 'Garrulous', meaning: 'Talkative' },
-            { word: 'Ambivalent', meaning: 'Mixed feelings' },
             { word: 'Mitigate', meaning: 'Make less severe' },
-            { word: 'Alleviate', meaning: 'Relieve pain' },
-            { word: 'Obfuscate', meaning: 'Make unclear' },
-            { word: 'Elucidate', meaning: 'Make clear' },
-            { word: 'Repudiate', meaning: 'Reject, deny' },
-            { word: 'Vindicate', meaning: 'Prove right' },
-            { word: 'Ubiquitous', meaning: 'Present everywhere' },
-            { word: 'Frugal', meaning: 'Economical' }
+            { word: 'Ubiquitous', meaning: 'Everywhere' }
         ];
         
         let cardCount = 0;
@@ -1607,34 +1560,22 @@
                         if (cardCount < 2) {
                             setTimeout(animateCardWithFlip, 1500);
                         } else {
-                            // Add remaining 2 gray cards fast
-                            setTimeout(animateGrayFast, 300);
+                            // Pause then switch to blue
+                            stackArea.classList.add('blink');
+                            setTimeout(() => {
+                                stackArea.classList.remove('blink');
+                                isBlue = true;
+                                setTimeout(animateCardFast, 300);
+                            }, 1000);
                         }
                     }, 200);
                 }, 400);
             }, 600);
         }
         
-        // Fast gray cards (cards 3-4)
-        function animateGrayFast() {
-            if (cardCount < 4) {
-                addCardToStack();
-                cardCount++;
-                setTimeout(animateGrayFast, 150);
-            } else {
-                // Pause then switch to blue
-                stackArea.classList.add('blink');
-                setTimeout(() => {
-                    stackArea.classList.remove('blink');
-                    isBlue = true;
-                    setTimeout(animateCardFast, 300);
-                }, 1000);
-            }
-        }
-        
         // Fast blue animation - no flip, just flow to stack
         function animateCardFast() {
-            const wordIndex = cardCount - 4;
+            const wordIndex = cardCount - 2;
             if (wordIndex >= blueWords.length) {
                 setTimeout(() => {
                     tagline.classList.add('show');
@@ -1647,7 +1588,7 @@
             
             addCardToStack();
             cardCount++;
-            setTimeout(animateCardFast, 100);
+            setTimeout(animateCardFast, 150);
         }
         
         // Start animation after page load
@@ -1655,15 +1596,22 @@
 
         // Mixpanel Event Tracking
         document.querySelector('.hero-cta .btn').addEventListener('click', function() {
-            mixpanel.track('See How It Works Clicked');
+            mixpanel.track('CTA Clicked', { button: 'See How It Works' });
         });
 
         document.querySelector('.start-learning-btn').addEventListener('click', function() {
-            mixpanel.track('Start Learning Clicked', { location: 'nav' });
+            mixpanel.track('CTA Clicked', { button: 'Start Learning', location: 'nav' });
         });
 
         document.querySelector('.demo-cta .btn').addEventListener('click', function() {
-            mixpanel.track('Start Learning Clicked', { location: 'demo' });
+            mixpanel.track('CTA Clicked', { button: 'Start Learning', location: 'demo' });
+        });
+
+        // Track demo word clicks
+        wordNavButtons.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                mixpanel.track('Demo Word Clicked', { word: words[index].word });
+            });
         });
     </script>
 </body>

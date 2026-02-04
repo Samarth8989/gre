@@ -568,18 +568,29 @@
             }
 
             .card-nav {
-                flex-wrap: wrap;
-                gap: 0.75rem;
+                flex-direction: column;
+                gap: 1rem;
             }
 
             .nav-btn {
-                padding: 0.75rem 1rem;
+                width: 100%;
+                justify-content: center;
+                padding: 0.85rem 1rem;
                 font-size: 0.9rem;
+            }
+
+            .nav-btn-prev {
+                order: 2;
+            }
+
+            .nav-btn-next {
+                order: 3;
             }
 
             .learn-btn {
                 width: 100%;
                 justify-content: center;
+                order: 1;
             }
 
             .keyboard-hint {
@@ -796,8 +807,13 @@
         }
 
         function goNext() {
-            if (currentIndex < 24) {
+            if (currentIndex < 23) {
                 showCard(currentIndex + 1);
+                mixpanel.track('Next Clicked', { 
+                    from_word: words[currentIndex - 1].word,
+                    to_word: words[currentIndex].word,
+                    word_number: currentIndex + 1
+                });
             } else {
                 showCompletion();
             }
@@ -806,6 +822,11 @@
         function goPrev() {
             if (currentIndex > 0) {
                 showCard(currentIndex - 1);
+                mixpanel.track('Previous Clicked', { 
+                    from_word: words[currentIndex + 1].word,
+                    to_word: words[currentIndex].word,
+                    word_number: currentIndex + 1
+                });
             }
         }
 

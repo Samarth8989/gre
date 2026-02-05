@@ -282,10 +282,22 @@
             margin: 1rem 0 0.5rem;
         }
 
+        .meaning-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .meaning-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-tertiary);
+            margin-bottom: 0.25rem;
+        }
+
         .meaning-text {
             font-size: 1.15rem;
             color: var(--text-secondary);
-            margin-bottom: 1.5rem;
             line-height: 1.6;
         }
 
@@ -759,7 +771,10 @@
                     <span class="word-type">${wordData.type}</span>
                 </div>
                 <div class="gre-word">${wordData.word}</div>
-                <div class="meaning-text">${wordData.meaning}</div>
+                <div class="meaning-section">
+                    <div class="meaning-label">Meaning</div>
+                    <div class="meaning-text">${wordData.meaning}</div>
+                </div>
                 <div class="bridge-section">
                     <div class="bridge-label">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
